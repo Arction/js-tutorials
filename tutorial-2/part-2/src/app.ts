@@ -1,4 +1,4 @@
-import { AxisTickStrategies, ChartXY, emptyFill, lightningChart, SolidLine, synchronizeAxisIntervals } from "@arction/lcjs"
+import { AxisTickStrategies, ChartXY, emptyFill, emptyLine, emptyTick, lightningChart, SolidLine, synchronizeAxisIntervals } from "@arction/lcjs"
 import { createProgressiveTraceGenerator } from '@arction/xydata'
 
 const dashboard = lightningChart().Dashboard({
@@ -30,7 +30,7 @@ for (let iTrend = 0; iTrend < 5; iTrend += 1) {
         .toPromise()
         .then(data => {
             data = data.map(p => ({
-                x: 1000 * p.x,
+                x: Date.now() + 60 * 1000 * p.x,
                 y: p.y,
             }))
 
@@ -40,9 +40,21 @@ for (let iTrend = 0; iTrend < 5; iTrend += 1) {
     chart.setTitleFillStyle(emptyFill)
 
     if (iTrend < 4) {
-        axisX.setTickStrategy(AxisTickStrategies.Empty)
+        axisX.setTickStrategy(AxisTickStrategies.DateTime, ticks => ticks
+            .setGreatTickStyle(emptyTick)
+            .setMajorTickStyle(majorTicks => majorTicks
+                .setLabelFillStyle(emptyFill)
+                .setTickLength(0)
+                .setTickPadding(0)
+            )
+            .setMinorTickStyle(minorTicks => minorTicks
+                .setLabelFillStyle(emptyFill)
+                .setTickLength(0)
+                .setTickPadding(0)
+            )
+        )
     } else {
-        axisX.setTickStrategy(AxisTickStrategies.Time)
+        axisX.setTickStrategy(AxisTickStrategies.DateTime)
     }
 }
 
