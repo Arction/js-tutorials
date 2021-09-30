@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Using chart in HTML page</title>
+    <meta charset="utf-8" />
+
+    <!-- Flexbox styling to have the chart and header fill the page.
+        Chart will take as much space as possible. -->
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .box {
+            display: flex;
+            flex-flow: column;
+            height: 100%;
+        }
+
+        .box .row.header {
+            flex: 0 1 auto;
+        }
+
+        .box .row.content {
+            flex: 1 1 auto;
+        }
+    </style>
+</head>
+
+<body class="box">
+    <h1 class="row header">LightningChart<sup>&#174;</sup> JS in HTML page</h1>
+
+    <!-- Create div to render the chart into-->
+    <div id="target" class="row content"></div>
+
+    <!--IIFE assembly (lcjs.iife.js) is a standalone JS file, 
+      which does not need any build tools, 
+      such as NPM, to be installed-->
+    <!--Script source must be defined in it's own script tag-->
+    <script src="lcjs.iife.js"></script>
+
+    <!--Actual chart related script tag-->
+    <script>
+        // Replace the contents of this script tag if you want to test code from our examples:
+        // https://www.arction.com/lightningchart-js-interactive-examples/
+
+        // Extract required parts from LightningChartJS.
+        const {
+            lightningChart
+        } = lcjs //Note: @arction/lcjs is not needed here, when using IIFE assembly
+
+        const chart = lightningChart().ChartXY({
+            container: 'target',
+        })
+
+        const lineSeries = chart.addLineSeries()
+
+        let data = []
+        for (let i = 0; i < 1000; i += 1) {
+            const x = i
+            const y = Math.random()
+            data.push({x, y})
+        }
+        lineSeries.add(data)
+
+    </script>
+</body>
+
+</html>
