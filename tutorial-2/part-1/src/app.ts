@@ -1,16 +1,31 @@
-import { lightningChart, SolidLine } from "@arction/lcjs"
+import { AxisTickStrategies, lightningChart, SolidLine } from "@arction/lcjs"
+import { createProgressiveTraceGenerator } from '@arction/xydata'
 
 const chart = lightningChart().ChartXY()
 
-chart.setTitle('Getting Started')
+const axisX = chart.getDefaultAxisX()
+    .setTickStrategy(AxisTickStrategies.Time)
 
-const lineSeries = chart.addSplineSeries()
 
-lineSeries.setStrokeStyle((style: SolidLine) => style.setThickness(5))
+for (let iTrend = 0; iTrend < 10; iTrend += 1) {
+    const series = chart.addLineSeries({
+        dataPattern: {
+            pattern: 'ProgressiveX',
+        }
+    })
 
-lineSeries.add([
-    { x: 0, y: 0 },
-    { x: 1, y: 7 },
-    { x: 2, y: 3 },
-    { x: 3, y: 10 },
-])
+    createProgressiveTraceGenerator()
+        .setNumberOfPoints(100000)
+        .generate()
+        .toPromise()
+        .then(data => {
+            data = data.map(p => ({
+                x: 1000 * p.x,
+                y: p.y,
+            }))
+
+            series.add(data)
+        })
+}
+
+const legend = chart.addLegendBox().add(chart)
