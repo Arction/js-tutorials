@@ -1,25 +1,27 @@
-import { AxisScrollStrategies, AxisTickStrategies, ChartXY, emptyFill, lightningChart, SolidLine, synchronizeAxisIntervals } from "@arction/lcjs"
-import { createProgressiveTraceGenerator } from '@arction/xydata'
+import { AxisScrollStrategies, AxisTickStrategies, ChartXY, emptyFill, emptyTick, lightningChart, SolidLine, synchronizeAxisIntervals, VisibleTicks } from "@arction/lcjs"
+import { createProgressiveTraceGenerator } from "@arction/xydata"
 
 const dashboard = lightningChart().Dashboard({
     numberOfColumns: 1,
     numberOfRows: 5,
 })
 
-let charts: ChartXY[] = []
+const charts: ChartXY[] = []
 
-for (let iTrend = 0; iTrend < 5; iTrend += 1) {
-
+for (let i = 0; i < 5; i += 1) {
+    
     const chart = dashboard.createChartXY({
         columnIndex: 0,
-        rowIndex: iTrend,
+        rowIndex: i,
     })
+        .setTitleFillStyle(emptyFill)
+
     charts.push(chart)
-    
+
     const axisX = chart.getDefaultAxisX()
 
     const axisY = chart.getDefaultAxisY()
-        .setThickness(50)
+        .setThickness(60)
 
     const series = chart.addLineSeries({
         dataPattern: {
@@ -39,11 +41,19 @@ for (let iTrend = 0; iTrend < 5; iTrend += 1) {
             series.add(dataPoint)
         })
 
-    chart.setTitleFillStyle(emptyFill)
-
-    if (iTrend < 4) {
-        axisX
-            .setTickStrategy(AxisTickStrategies.Empty)
+    if (i < 4) {
+        axisX.setTickStrategy(AxisTickStrategies.Time, ticks => ticks
+            .setMajorTickStyle(majorTicks => majorTicks
+                .setLabelFillStyle(emptyFill)
+                .setTickLength(0)
+                .setTickPadding(0)
+            )    
+            .setMinorTickStyle((minorTicks: VisibleTicks) => minorTicks
+                .setLabelFillStyle(emptyFill)
+                .setTickLength(0)
+                .setTickPadding(0)
+            )
+        )
             .setScrollStrategy(undefined)
     } else {
         axisX
