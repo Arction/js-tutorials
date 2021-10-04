@@ -3,8 +3,8 @@ import { lightningChart, PointShape, SolidLine } from "@arction/lcjs"
 const chart = lightningChart().ChartXY()
     .setTitle('Bubble chart')
 
-chart.getDefaultAxisX().setInterval(0,1,false,true)
-chart.getDefaultAxisY().setInterval(0,1,false,true)
+chart.getDefaultAxisX().setInterval(-.05,1.05,false,true)
+chart.getDefaultAxisY().setInterval(-.05,1.05,false,true)
 
 for (let iSeries = 0; iSeries < 5; iSeries += 1) {
     
@@ -12,7 +12,7 @@ for (let iSeries = 0; iSeries < 5; iSeries += 1) {
         .setIndividualPointSizeEnabled(true)
 
     const points = []
-    for (let i = 0; i < 10; i += 1) {
+    for (let i = 0; i < 20; i += 1) {
         points.push({x: Math.random(), y: Math.random(), size: 10 + Math.random() * 100})
     }
 

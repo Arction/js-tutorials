@@ -3,8 +3,8 @@ import { Color, ColorRGBA, lightningChart, LUT, PalettedFill, PointShape, SolidL
 const chart = lightningChart().ChartXY()
     .setTitle('Value palette scatter chart')
 
-chart.getDefaultAxisX().setInterval(0,1,false,true)
-chart.getDefaultAxisY().setInterval(0,1,false,true)
+    chart.getDefaultAxisX().setInterval(0,1.00,false,true)
+    chart.getDefaultAxisY().setInterval(0,1.00,false,true)
 
 const series = chart.addPointSeries({pointShape: PointShape.Circle})
     .setIndividualPointValueEnabled(true)
